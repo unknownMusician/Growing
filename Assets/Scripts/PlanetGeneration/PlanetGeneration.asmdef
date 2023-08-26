@@ -1,0 +1,19 @@
+{
+    "name": "Growing.PlanetGeneration",
+    "rootNamespace": "Growing.PlanetGeneration",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "AreYouFruits.Nullability.dll",
+        "AreYouFruits.ConstructorGeneration.dll",
+        "AreYouFruits.DependencyInjection.dll",
+        "AreYouFruits.InitializerGeneration.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,17 @@
+{
+    "name": "Growing.Utils",
+    "rootNamespace": "Growing.Utils",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "AreYouFruits.DependencyInjection.dll",
+        "AreYouFruits.Nullability.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
