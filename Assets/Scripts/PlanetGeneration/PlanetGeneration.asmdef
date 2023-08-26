@@ -10,7 +10,8 @@
         "AreYouFruits.Nullability.dll",
         "AreYouFruits.ConstructorGeneration.dll",
         "AreYouFruits.DependencyInjection.dll",
-        "AreYouFruits.InitializerGeneration.dll"
+        "AreYouFruits.InitializerGeneration.dll",
+        "AreYouFruits.Assertions.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],

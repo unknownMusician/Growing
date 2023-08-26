@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using AreYouFruits.Assertions;
 using AreYouFruits.ConstructorGeneration;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Growing.PlanetGeneration
 {
@@ -35,11 +39,13 @@ namespace Growing.PlanetGeneration
 
         private Mesh GenerateMesh()
         {
+            var (vertices, triangles) = SubdivideTriangles(icosahedronDataProvider.Vertices, icosahedronDataProvider.Triangles);
+            
             var mesh = new Mesh
             {
                 name = "Generated Planet",
-                vertices = icosahedronDataProvider.Vertices,
-                triangles = icosahedronDataProvider.Triangles,
+                vertices = vertices,
+                triangles = triangles,
             };
             
             mesh.RecalculateNormals();
@@ -47,9 +53,38 @@ namespace Growing.PlanetGeneration
             return mesh;
         }
 
+        private (Vector3[], int[]) SubdivideTriangles(Vector3[] vertices, int[] triangles)
+        {
+            var resultVertices = new List<Vector3>();
+
+            for (int i = 0; i < triangles.Length; i += 3)
+            {
+                Triangle[] subdivideTriangles = SubdivideTriangle(new Triangle
+                {
+                    Vertex0 = vertices[triangles[i + 0]],
+                    Vertex1 = vertices[triangles[i + 1]],
+                    Vertex2 = vertices[triangles[i + 2]],
+                });
+
+                foreach (Triangle subdivideTriangle in subdivideTriangles)
+                {
+                    resultVertices.Add(subdivideTriangle.Vertex0);
+                    resultVertices.Add(subdivideTriangle.Vertex1);
+                    resultVertices.Add(subdivideTriangle.Vertex2);
+                }
+            }
+
+            return (resultVertices.ToArray(), resultVertices.Select((_, i) => i).ToArray());
+        }
+
         private Triangle[] SubdivideTriangle(Triangle triangle)
         {
             int detailing = planetGenerationSettings.Detailing;
+
+            if (detailing < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(detailing), detailing, null);
+            }
 
             Vector3[] triangleVertices = SubdivideTriangleVertices(triangle, detailing);
 
@@ -76,8 +111,6 @@ namespace Growing.PlanetGeneration
                     results.Add(vertex);
                 }
             }
-            results.Add(Vector3.Lerp(triangle.Vertex0, triangle.Vertex1, ));
-            
             
             return results.ToArray();
         }
@@ -136,7 +169,7 @@ namespace Growing.PlanetGeneration
             {
                 rowFirstIndex += row;
 
-                int columnsCount = row * 2 + 1;
+                int columnsCount = row + 1;
 
                 for (int column = 0; column < columnsCount; column++)
                 {
@@ -144,7 +177,7 @@ namespace Growing.PlanetGeneration
 
                     if (column != columnsCount - 1)
                     {
-                        results.Add(new Triangle(i[rowFirstIndex + column], i[rowFirstIndex + column + 1], i[rowFirstIndex + row + column + 2]));
+                        results.Add(new Triangle(i[rowFirstIndex + column], i[rowFirstIndex + row + column + 2], i[rowFirstIndex + column + 1]));
                     }
                 }
             }

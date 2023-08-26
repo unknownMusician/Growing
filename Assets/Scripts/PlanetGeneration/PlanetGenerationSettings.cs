@@ -6,6 +6,6 @@ namespace Growing.PlanetGeneration
     public sealed class PlanetGenerationSettings : ScriptableObject
     {
         [field: SerializeField] public GameObject Prefab { get; private set; }
-        [field: SerializeField] public int Detailing { get; private set; }
+        [field: SerializeField, Min(1)] public int Detailing { get; private set; } = 1;
     }
 }
