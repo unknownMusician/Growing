@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 748c03f3f46243cdbf9521a0f93f8fd7, type: 3}
   m_Name: PlanetGenerationSettings
   m_EditorClassIdentifier: 
+  <Prefab>k__BackingField: {fileID: 4392133646049730798, guid: 188584cc01ee6ec47b01498e1bc7c611, type: 3}
   <Detailing>k__BackingField: 0

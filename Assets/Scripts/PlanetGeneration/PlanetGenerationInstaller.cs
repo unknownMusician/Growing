@@ -11,6 +11,8 @@ namespace Growing.PlanetGeneration
         {
             container.BindToInjectedConstructorLazySingleton<PlanetGenerator>();
             container.BindToInjectedConstructorLazySingleton<PlanetHolder>();
+            container.BindToInjectedConstructorLazySingleton<SmoothIcosahedronDataProvider>();
+            container.BindToInjectedConstructorLazySingleton<IIcosahedronDataProvider, LowPolyIcosahedronDataProvider>();
         }
     }
 }
