@@ -88,7 +88,17 @@ namespace Growing.PlanetGeneration
 
             Vector3[] triangleVertices = SubdivideTriangleVertices(triangle, detailing);
 
+            Normalize(triangleVertices);
+            
             return AssembleSubdividedTriangles(triangleVertices, detailing);
+        }
+
+        private void Normalize(Vector3[] vertices)
+        {
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                vertices[i] = vertices[i].normalized;
+            }
         }
 
         private static Vector3[] SubdivideTriangleVertices(Triangle triangle, int detailing)
