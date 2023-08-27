@@ -1,13 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using AreYouFruits.Assertions;
 using AreYouFruits.ConstructorGeneration;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Growing.PlanetGeneration
 {
+    public ref struct SpanFiller<T>
+    {
+        private readonly Span<T> span;
+        private int index;
+
+        public SpanFiller(Span<T> span)
+        {
+            this.span = span;
+            index = 0;
+        }
+
+        public void Add(T value)
+        {
+            span[index++] = value;
+        }
+    }
+    
     public partial struct Triangle
     {
         [GenerateConstructor] public Vector3 Vertex0;
@@ -20,25 +35,24 @@ namespace Growing.PlanetGeneration
         [GenerateConstructor] private readonly PlanetGenerationSettings planetGenerationSettings;
         [GenerateConstructor] private readonly IIcosahedronDataProvider icosahedronDataProvider;
         [GenerateConstructor] private readonly PlanetHolder planetHolder;
+
+        private Vector3[] singleSubdividedTriangleVerticesBuffer;
         
         public void Generate()
         {
-            _ = planetGenerationSettings.Detailing;
-
-            GameObject planetObject = Object.Instantiate(planetGenerationSettings.Prefab);
-
-            planetObject.GetComponent<MeshFilter>().sharedMesh = GenerateIcoSphereMesh();
+            if (!planetHolder.Value.TryGet(out GameObject planetObject))
+            {
+                planetObject = Object.Instantiate(planetGenerationSettings.Prefab);
+                planetHolder.Value = planetObject;
+            }
             
-            planetHolder.Value = planetObject;
-        }
-
-        private Mesh GenerateIcoSphereMesh()
-        {
-            return GenerateMesh();
+            planetObject.GetComponent<MeshFilter>().sharedMesh = GenerateMesh();
         }
 
         private Mesh GenerateMesh()
         {
+            singleSubdividedTriangleVerticesBuffer = new Vector3[GetSubdividedTriangleVerticesCount(planetGenerationSettings.Detailing)];
+            
             var (vertices, triangles) = SubdivideTriangles(icosahedronDataProvider.Vertices, icosahedronDataProvider.Triangles);
             
             var mesh = new Mesh
@@ -50,34 +64,56 @@ namespace Growing.PlanetGeneration
             
             mesh.RecalculateNormals();
 
+            singleSubdividedTriangleVerticesBuffer = null;
+
             return mesh;
         }
 
         private (Vector3[], int[]) SubdivideTriangles(Vector3[] vertices, int[] triangles)
         {
-            var resultVertices = new List<Vector3>();
+            int subdividedTrianglesCount = GetSubdividedTrianglesCount(planetGenerationSettings.Detailing);
 
-            for (int i = 0; i < triangles.Length; i += 3)
+            int resultTrianglesCount = triangles.Length * subdividedTrianglesCount;
+
+            var resultVertices = new Vector3[resultTrianglesCount];
+
+            var subdividedTriangles = new Triangle[subdividedTrianglesCount];
+
+            for (int i = 0; i < triangles.Length / 3; i++)
             {
-                Triangle[] subdivideTriangles = SubdivideTriangle(new Triangle
+                SubdivideTriangle(new Triangle
                 {
-                    Vertex0 = vertices[triangles[i + 0]],
-                    Vertex1 = vertices[triangles[i + 1]],
-                    Vertex2 = vertices[triangles[i + 2]],
-                });
+                    Vertex0 = vertices[triangles[i * 3 + 0]],
+                    Vertex1 = vertices[triangles[i * 3 + 1]],
+                    Vertex2 = vertices[triangles[i * 3 + 2]],
+                }, subdividedTriangles);
 
-                foreach (Triangle subdivideTriangle in subdivideTriangles)
+                for (int j = 0; j < subdividedTriangles.Length; j++)
                 {
-                    resultVertices.Add(subdivideTriangle.Vertex0);
-                    resultVertices.Add(subdivideTriangle.Vertex1);
-                    resultVertices.Add(subdivideTriangle.Vertex2);
+                    Triangle subdividedTriangle = subdividedTriangles[j];
+
+                    resultVertices[i * subdividedTrianglesCount * 3 + j * 3 + 0] = subdividedTriangle.Vertex0;
+                    resultVertices[i * subdividedTrianglesCount * 3 + j * 3 + 1] = subdividedTriangle.Vertex1;
+                    resultVertices[i * subdividedTrianglesCount * 3 + j * 3 + 2] = subdividedTriangle.Vertex2;
                 }
             }
 
-            return (resultVertices.ToArray(), resultVertices.Select((_, i) => i).ToArray());
+            return (resultVertices, NumerateLowPolyTriangles(resultVertices));
         }
 
-        private Triangle[] SubdivideTriangle(Triangle triangle)
+        private static int[] NumerateLowPolyTriangles(Vector3[] vertices)
+        {
+            int[] results = new int[vertices.Length];
+
+            for (int i = 0; i < results.Length; i++)
+            {
+                results[i] = i;
+            }
+            
+            return results;
+        }
+
+        private void SubdivideTriangle(Triangle triangle, Span<Triangle> results)
         {
             int detailing = planetGenerationSettings.Detailing;
 
@@ -88,90 +124,39 @@ namespace Growing.PlanetGeneration
 
             Vector3[] triangleVertices = SubdivideTriangleVertices(triangle, detailing);
 
-            Normalize(triangleVertices);
-            
-            return AssembleSubdividedTriangles(triangleVertices, detailing);
+            AssembleSubdividedTriangles(triangleVertices, detailing, results);
         }
 
-        private void Normalize(Vector3[] vertices)
+        private Vector3[] SubdivideTriangleVertices(Triangle triangle, int detailing)
         {
-            for (int i = 0; i < vertices.Length; i++)
-            {
-                vertices[i] = vertices[i].normalized;
-            }
-        }
-
-        private static Vector3[] SubdivideTriangleVertices(Triangle triangle, int detailing)
-        {
-            var results = new List<Vector3>();
+            var results = singleSubdividedTriangleVerticesBuffer;
+            var resultsFiller = new SpanFiller<Vector3>(results);
 
             for (int row = 0; row <= detailing; row++)
             {
-                Vector3 rowStart = Vector3.Lerp(triangle.Vertex0, triangle.Vertex1, (float)row / detailing);
-                Vector3 rowEnd = Vector3.Lerp(triangle.Vertex0, triangle.Vertex2, (float)row / detailing);
+                float horizontalT = (float)row / detailing;
+                
+                Vector3 rowStart = Vector3.SlerpUnclamped(triangle.Vertex0, triangle.Vertex1, horizontalT);
+                Vector3 rowEnd = Vector3.SlerpUnclamped(triangle.Vertex0, triangle.Vertex2, horizontalT);
 
                 for (int column = 0; column <= row; column++)
                 {
                     Vector3 vertex = (row == 0) switch
                     {
                         true => triangle.Vertex0,
-                        false => Vector3.Lerp(rowStart, rowEnd, (float)column / row),
+                        false => Vector3.SlerpUnclamped(rowStart, rowEnd, (float)column / row),
                     };
 
-                    results.Add(vertex);
+                    resultsFiller.Add(vertex);
                 }
             }
             
-            return results.ToArray();
+            return results;
         }
 
-        // todo
-        // private Triangle[] AssembleSubdividedTriangles1(Vector3[] vertices)
-        // {
-        //     Vector3[] i = vertices;
-        //     
-        //     var results = new List<Triangle>();
-        //
-        //     int row;
-        //     int rowFirstIndex;
-        //     int column;
-        //     int columnsCount;
-        //
-        //     row = 0;
-        //     rowFirstIndex = 0;
-        //     column = 0;
-        //     columnsCount = row * 2 + 1;
-        //     results.Add(new Triangle(i[rowFirstIndex], i[rowFirstIndex + row + column + 1], i[rowFirstIndex + row + column + 2]));
-        //     
-        //     row = 1;
-        //     rowFirstIndex = 1;
-        //     columnsCount = row * 2 + 1;
-        //     column = 0;
-        //     results.Add(new Triangle(i[rowFirstIndex + column], i[rowFirstIndex + row + column + 1], i[rowFirstIndex + row + column + 2]));
-        //     results.Add(new Triangle(i[rowFirstIndex + column], i[rowFirstIndex + column + 1], i[rowFirstIndex + row + column + 2]));
-        //     column = 1;
-        //     results.Add(new Triangle(i[rowFirstIndex + column], i[rowFirstIndex + row + column + 1], i[rowFirstIndex + row + column + 2]));
-        //     
-        //     row = 2;
-        //     rowFirstIndex = 3;
-        //     columnsCount = row * 2 + 1;
-        //     column = 0;
-        //     results.Add(new Triangle(i[rowFirstIndex + column], i[rowFirstIndex + row + column + 1], i[rowFirstIndex + row + column + 2]));
-        //     results.Add(new Triangle(i[rowFirstIndex + column], i[rowFirstIndex + column + 1], i[rowFirstIndex + row + column + 2]));
-        //     column = 1;
-        //     results.Add(new Triangle(i[rowFirstIndex + column], i[rowFirstIndex + row + column + 1], i[rowFirstIndex + row + column + 2]));
-        //     results.Add(new Triangle(i[rowFirstIndex + column], i[rowFirstIndex + column + 1], i[rowFirstIndex + row + column + 2]));
-        //     column = 2;
-        //     results.Add(new Triangle(i[rowFirstIndex + column], i[rowFirstIndex + row + column + 1], i[rowFirstIndex + row + column + 2]));
-        //     
-        //     return results.ToArray();
-        // }
-
-        private Triangle[] AssembleSubdividedTriangles(Vector3[] vertices, int detailing)
+        private static void AssembleSubdividedTriangles(Vector3[] vertices, int detailing, Span<Triangle> results)
         {
-            Vector3[] i = vertices;
-            
-            var results = new List<Triangle>();
+            var resultsFiller = new SpanFiller<Triangle>(results);
 
             int rowFirstIndex = 0;
 
@@ -183,16 +168,29 @@ namespace Growing.PlanetGeneration
 
                 for (int column = 0; column < columnsCount; column++)
                 {
-                    results.Add(new Triangle(i[rowFirstIndex + column], i[rowFirstIndex + row + column + 1], i[rowFirstIndex + row + column + 2]));
+                    Vector3 topVertex = vertices[rowFirstIndex + column];
+                    Vector3 leftBottomVertex = vertices[rowFirstIndex + column + row + 2];
+                    Vector3 rightBottomVertex = vertices[rowFirstIndex + column + row + 1];
+                    
+                    resultsFiller.Add(new Triangle(topVertex, rightBottomVertex, leftBottomVertex));
 
                     if (column != columnsCount - 1)
                     {
-                        results.Add(new Triangle(i[rowFirstIndex + column], i[rowFirstIndex + row + column + 2], i[rowFirstIndex + column + 1]));
+                        Vector3 rightTopVertex = vertices[rowFirstIndex + column + 1];
+                        resultsFiller.Add(new Triangle(topVertex, leftBottomVertex, rightTopVertex));
                     }
                 }
             }
+        }
 
-            return results.ToArray();
+        private static int GetSubdividedTrianglesCount(int detailing)
+        {
+            return detailing * detailing;
+        }
+
+        private static int GetSubdividedTriangleVerticesCount(int detailing)
+        {
+            return (detailing + 1) * (detailing + 2) / 2;
         }
     }
 }

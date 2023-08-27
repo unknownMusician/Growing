@@ -1,4 +1,5 @@
-﻿using AreYouFruits.InitializerGeneration;
+﻿using System;
+using AreYouFruits.InitializerGeneration;
 using UnityEngine;
 
 namespace Growing.PlanetGeneration
@@ -9,8 +10,11 @@ namespace Growing.PlanetGeneration
         [GenerateInitializer] private PlanetGenerator planetGenerator;
         // todo
         // [GenerateInitializer] private PlanetHolder planetHolder;
+        //
+        // [SerializeField] private float showMaxDistance;
+        // [SerializeField] private Vector3 showCenter;
         
-        private void Start()
+        private void Update()
         {
             planetGenerator.Generate();
         }
@@ -25,16 +29,24 @@ namespace Growing.PlanetGeneration
         //
         //     Mesh mesh = planet.GetComponent<MeshFilter>().sharedMesh;
         //
-        //     for (int i = 0; i < mesh.vertices.Length; i += 3)
+        //     int[] meshTriangles = mesh.triangles;
+        //     Vector3[] meshVertices = mesh.vertices;
+        //
+        //     for (int i = 0; i < meshTriangles.Length; i += 3)
         //     {
-        //         DrawLine(mesh.vertices[i + 0], mesh.vertices[i + 1]);
-        //         DrawLine(mesh.vertices[i + 1], mesh.vertices[i + 2]);
-        //         DrawLine(mesh.vertices[i + 2], mesh.vertices[i + 0]);
+        //         DrawLine(meshVertices[meshTriangles[i + 0]], meshVertices[meshTriangles[i + 1]]);
+        //         DrawLine(meshVertices[meshTriangles[i + 1]], meshVertices[meshTriangles[i + 2]]);
+        //         DrawLine(meshVertices[meshTriangles[i + 2]], meshVertices[meshTriangles[i + 0]]);
         //     }
         // }
         //
         // private void DrawLine(Vector3 start, Vector3 end)
         // {
+        //     if (Vector3.Distance(showCenter, start) > showMaxDistance)
+        //     {
+        //         return;
+        //     }
+        //     
         //     Vector3 center = (start + end) / 2;
         //
         //     float distance = Vector3.Distance(start, end);
