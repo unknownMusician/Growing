@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using AreYouFruits.ConstructorGeneration;
 using AreYouFruits.MonoBehaviourUtils.Unity;
+using Growing.Settings;
 using Growing.Utils;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -26,14 +28,16 @@ namespace Growing.PlanetGeneration
             var mesh = GenerateMesh();
             
             planetObject.GetComponentOrThrow<MeshFilter>().sharedMesh = mesh;
-            //planetObject.GetComponentOrThrow<MeshCollider>().sharedMesh = mesh;
+            planetObject.GetComponentOrThrow<SphereCollider>().radius = planetGenerationSettings.Radius;
         }
 
         private Mesh GenerateMesh()
         {
             singleSubdividedTriangleVerticesBuffer = new Vector3[GetSubdividedTriangleVerticesCount(planetGenerationSettings.Detailing)];
             
-            var (vertices, triangles) = SubdivideTriangles(icosahedronDataProvider.Vertices, icosahedronDataProvider.Triangles);
+            var (vertices, triangles) = SubdivideTriangles(
+                icosahedronDataProvider.Vertices.Select(vertex => vertex * planetGenerationSettings.Radius).ToArray(),
+                icosahedronDataProvider.Triangles);
             
             var mesh = new Mesh
             {
