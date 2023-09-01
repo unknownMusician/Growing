@@ -1,35 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using AreYouFruits.ConstructorGeneration;
+using Growing.Utils;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Growing.PlanetGeneration
 {
-    public ref struct SpanFiller<T>
-    {
-        private readonly Span<T> span;
-        private int index;
-
-        public SpanFiller(Span<T> span)
-        {
-            this.span = span;
-            index = 0;
-        }
-
-        public void Add(T value)
-        {
-            span[index++] = value;
-        }
-    }
-    
-    public partial struct Triangle
-    {
-        [GenerateConstructor] public Vector3 Vertex0;
-        [GenerateConstructor] public Vector3 Vertex1;
-        [GenerateConstructor] public Vector3 Vertex2;
-    }
-    
     public sealed partial class PlanetGenerator
     {
         [GenerateConstructor] private readonly PlanetGenerationSettings planetGenerationSettings;

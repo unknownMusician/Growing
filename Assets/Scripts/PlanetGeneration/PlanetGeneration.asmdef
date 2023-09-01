@@ -1,7 +1,9 @@
 {
     "name": "Growing.PlanetGeneration",
     "rootNamespace": "Growing.PlanetGeneration",
-    "references": [],
+    "references": [
+        "GUID:18589f4a50858d743a0c6e89f3e94a0a"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

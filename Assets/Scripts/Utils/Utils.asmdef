@@ -8,7 +8,8 @@
     "overrideReferences": true,
     "precompiledReferences": [
         "AreYouFruits.DependencyInjection.dll",
-        "AreYouFruits.Nullability.dll"
+        "AreYouFruits.Nullability.dll",
+        "AreYouFruits.ConstructorGeneration.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],
