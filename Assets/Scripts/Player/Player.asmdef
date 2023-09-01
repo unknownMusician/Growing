@@ -1,14 +1,20 @@
 {
-    "name": "Player",
-    "rootNamespace": "",
+    "name": "Growing.Player",
+    "rootNamespace": "Growing.Player",
     "references": [
+        "GUID:18589f4a50858d743a0c6e89f3e94a0a",
         "GUID:86a22b5613354e95a5a67f433dfa64dd"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "AreYouFruits.InitializerGeneration.dll",
+        "AreYouFruits.Assertions.dll",
+        "AreYouFruits.Nullability.dll",
+        "AreYouFruits.DependencyInjection.dll"
+    ],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
