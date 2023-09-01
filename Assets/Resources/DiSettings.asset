@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Bindings>k__BackingField:
   - Object: {fileID: 11400000, guid: 367519b67ea882147bedbedb5fc90773, type: 2}
-    TypeName: Growing.PlanetGeneration.PlanetGenerationSettings, Growing.PlanetGeneration,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    TypeName: Growing.Settings.PlanetGenerationSettings, Settings, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null

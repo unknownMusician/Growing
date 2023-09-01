@@ -286,7 +286,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 3188864507003625314, guid: 59ed1bc5d927e8b49a5515e7518319d9, type: 3}
-  spawnPosition: {x: 0, y: 1, z: 0}
 --- !u!4 &891860923
 Transform:
   m_ObjectHideFlags: 0
@@ -453,7 +452,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eac1daf6b9ac4aa18c6e426e08726de2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  height: 3
+  height: 25
 --- !u!114 &963194231
 MonoBehaviour:
   m_ObjectHideFlags: 0
