@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
-namespace Growing.PlanetGeneration
+namespace Growing.Settings
 {
     [CreateAssetMenu(menuName = "Growing/" + nameof(PlanetGenerationSettings), fileName = nameof(PlanetGenerationSettings), order = 0)]
     public sealed class PlanetGenerationSettings : ScriptableObject
     {
         [field: SerializeField] public GameObject Prefab { get; private set; }
         [field: SerializeField, Min(1)] public int Detailing { get; private set; } = 1;
-        public const bool IsSlerp = true;
+        [field: SerializeField, Min(1)] public float Radius { get; private set; } = 1;
     }
 }

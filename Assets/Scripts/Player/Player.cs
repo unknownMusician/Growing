@@ -47,8 +47,10 @@ namespace Player
 
         private Vector3 GetGroundedPosition(Vector3 newPosition)
         {
+            var downDirection = Vector3.zero - newPosition;
+            newPosition -= downDirection * 0.1f;
             Physics.Raycast(
-                new Ray(newPosition, Vector3.zero - newPosition),
+                new Ray(newPosition, downDirection),
                 out var hit,
                 Vector3.Distance(newPosition, Vector3.zero),
                 groundLayer).Expect(true);
