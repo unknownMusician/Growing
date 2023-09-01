@@ -13,7 +13,8 @@
         "AreYouFruits.ConstructorGeneration.dll",
         "AreYouFruits.DependencyInjection.dll",
         "AreYouFruits.InitializerGeneration.dll",
-        "AreYouFruits.Assertions.dll"
+        "AreYouFruits.Assertions.dll",
+        "AreYouFruits.MonoBehaviourUtils.Unity.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],

@@ -1,5 +1,6 @@
 ﻿using System;
 using AreYouFruits.ConstructorGeneration;
+using AreYouFruits.MonoBehaviourUtils.Unity;
 using Growing.Utils;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -21,8 +22,11 @@ namespace Growing.PlanetGeneration
                 planetObject = Object.Instantiate(planetGenerationSettings.Prefab);
                 planetHolder.Value = planetObject;
             }
+
+            var mesh = GenerateMesh();
             
-            planetObject.GetComponent<MeshFilter>().sharedMesh = GenerateMesh();
+            planetObject.GetComponentOrThrow<MeshFilter>().sharedMesh = mesh;
+            //planetObject.GetComponentOrThrow<MeshCollider>().sharedMesh = mesh;
         }
 
         private Mesh GenerateMesh()
