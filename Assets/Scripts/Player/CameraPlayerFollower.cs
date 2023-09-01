@@ -22,7 +22,7 @@ namespace Player
 
             var cameraPosition = playerPosition + cameraDirection * height;
             transform.position = cameraPosition;
-            transform.forward = -cameraDirection;
+            transform.rotation = Quaternion.LookRotation(-cameraDirection, transform.up);
         }
     }
 }
