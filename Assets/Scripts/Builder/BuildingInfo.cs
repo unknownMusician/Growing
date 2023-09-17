@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Growing.UI.Windows.Builder
+namespace Growing.Builder
 {
     [Serializable]
     public struct BuildingInfo
