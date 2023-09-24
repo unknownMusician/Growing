@@ -1,7 +1,7 @@
 ﻿using System;
 using AreYouFruits.ConstructorGeneration;
 
-namespace Events
+namespace Growing.Events
 {
     public sealed partial class EventBus
     {

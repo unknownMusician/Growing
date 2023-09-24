@@ -1,6 +1,6 @@
 using System;
 
-namespace Events
+namespace Growing.Events
 {
     public sealed class SubscribersOrderer
     {

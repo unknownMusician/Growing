@@ -12,12 +12,7 @@ namespace Growing.Utils.ExternalPolymorphism
             public Action<TParameterBase> Wrapper;
         }
         
-        private readonly Dictionary<Type, Entry> registered;
-
-        public VirtualAction()
-        {
-            registered = new Dictionary<Type, Entry>();
-        }
+        private readonly Dictionary<Type, Entry> registered = new();
 
         public bool Register<T>(Action<T> action)
             where T : TParameterBase
@@ -140,12 +135,7 @@ namespace Growing.Utils.ExternalPolymorphism
             public Action<TParameterBase, T1> Wrapper;
         }
         
-        private readonly Dictionary<Type, Entry> registered;
-
-        public VirtualAction()
-        {
-            registered = new Dictionary<Type, Entry>();
-        }
+        private readonly Dictionary<Type, Entry> registered = new();
 
         public bool Register<T>(Action<T, T1> action)
             where T : TParameterBase

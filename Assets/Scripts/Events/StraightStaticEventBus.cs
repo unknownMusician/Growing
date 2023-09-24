@@ -4,7 +4,7 @@ using System.Linq;
 using AreYouFruits.ConstructorGeneration;
 using Growing.Utils;
 
-namespace Events
+namespace Growing.Events
 {
     public sealed partial class StraightStaticEventBus
         // todo: unusable but shows how EventBus (in EventBus.cs) works

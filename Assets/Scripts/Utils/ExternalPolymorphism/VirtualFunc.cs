@@ -6,12 +6,7 @@ namespace Growing.Utils.ExternalPolymorphism
 {
     public sealed class VirtualFunc<TParameterBase, TResult>
     {
-        private readonly Dictionary<Type, Func<TParameterBase, TResult>> registered;
-
-        public VirtualFunc()
-        {
-            registered = new Dictionary<Type, Func<TParameterBase, TResult>>();
-        }
+        private readonly Dictionary<Type, Func<TParameterBase, TResult>> registered = new();
 
         public void Register<T>(Func<T, TResult> func)
             where T : TParameterBase

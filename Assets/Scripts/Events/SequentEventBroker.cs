@@ -5,7 +5,7 @@ using Growing.Utils;
 using Growing.Utils.ExternalPolymorphism;
 using Growing.Utils.SequentEvents;
 
-namespace Events
+namespace Growing.Events
 {
     public sealed class SequentEventBroker<TMessageBase>
     {
