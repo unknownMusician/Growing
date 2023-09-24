@@ -17,5 +17,5 @@ MonoBehaviour:
     TypeName: Growing.Settings.PlanetGenerationSettings, Growing.Settings, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   - Object: {fileID: 11400000, guid: 8f62cbd7cc2b07a48a2fadee5d7c62c0, type: 2}
-    TypeName: Growing.UI.Windows.Builder.BuildingsSettings, Growing.UI.Windows, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
+    TypeName: Growing.Builder.BuildingsSettings, Builder, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
