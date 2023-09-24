@@ -2,7 +2,7 @@ using AreYouFruits.DependencyInjection;
 using AreYouFruits.DependencyInjection.ContextInitialization;
 using AreYouFruits.DependencyInjection.TypeResolvers;
 
-namespace Growing.Events
+namespace Growing.Events.DI
 {
     public static class EventsInstaller
     {
