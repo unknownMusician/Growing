@@ -32,6 +32,7 @@ namespace Growing.Events
             sequentAction = new(allowSameOrder: allowSameOrder);
             sequentAction.Add(handler, order).Expect(true);
 
+            sequentActions.Add(sequentAction);
             virtualAction.Register<TMessage>(sequentAction.Invoke).Expect(true);
 
             return true;
