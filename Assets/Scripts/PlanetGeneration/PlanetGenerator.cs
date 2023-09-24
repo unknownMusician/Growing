@@ -28,7 +28,7 @@ namespace Growing.PlanetGeneration
             var mesh = GenerateMesh();
             
             planetObject.GetComponentOrThrow<MeshFilter>().sharedMesh = mesh;
-            planetObject.GetComponentOrThrow<SphereCollider>().radius = planetGenerationSettings.Radius;
+            planetObject.GetComponentOrThrow<MeshCollider>().sharedMesh = mesh;
         }
 
         private Mesh GenerateMesh()
