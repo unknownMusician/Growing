@@ -1,0 +1,17 @@
+{
+    "name": "ResourceSystem",
+    "rootNamespace": "Growing.ResourceSystem",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "AreYouFruits.InitializerGeneration.dll",
+        "AreYouFruits.DependencyInjection.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
