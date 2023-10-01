@@ -1,5 +1,5 @@
 {
-    "name": "ResourceSystem",
+    "name": "Growing.ResourceSystem",
     "rootNamespace": "Growing.ResourceSystem",
     "references": [],
     "includePlatforms": [],
