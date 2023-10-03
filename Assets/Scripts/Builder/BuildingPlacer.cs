@@ -11,6 +11,9 @@ namespace Growing.Builder
         private const int RaycastMaxDistance = int.MaxValue;
 
         [GenerateInitializer] private PlacedBuildingInfoHolder placedBuildingInfoHolder;
+
+        // TODO : It is better to use EventBus to reduce amount of dependencies
+        public event Action<GameObject> OnBuildingPlaced;
         
         private void Update()
         {
@@ -73,8 +76,9 @@ namespace Growing.Builder
 
         private void PlaceBuilding(PlacementData placementData)
         {
-            Instantiate(placedBuildingInfoHolder.CurrentBuildingInfo.GetOrThrow().Prefab, placementData.Position,
-                placementData.Rotation);
+            GameObject building = Instantiate(placedBuildingInfoHolder.CurrentBuildingInfo.GetOrThrow().Prefab, 
+                placementData.Position, placementData.Rotation);
+            OnBuildingPlaced?.Invoke(building);
         }
     }
 }
