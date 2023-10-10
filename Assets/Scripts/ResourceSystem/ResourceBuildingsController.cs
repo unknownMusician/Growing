@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using UnityEngine;
 
 namespace Growing.ResourceSystem
 {
-    public class ResourceBuildingsController : IDisposable
+    public sealed class ResourceBuildingsController : IDisposable
     {
         private readonly ResourceBuildingsHolder resourceBuildingsHolder;
         private readonly ResourceHolder resourceHolder;
@@ -38,17 +36,9 @@ namespace Growing.ResourceSystem
 
         private void CreateResources()
         {
-            foreach (var (resourceType, resourceCreators) in resourceBuildingsHolder.ResourceCreatorsByResourceTypes)
+            foreach (var resourceCreator in resourceBuildingsHolder.ResourceCreators)
             {
-                if (resourceCreators.Count == 0)
-                {
-                    continue;
-                }
-
-                float amountOfCreatedResource = resourceCreators
-                    .Sum(resourceCreator => resourceCreator.AmountOfResourcePerSecond);
-
-                resourceHolder.Add(resourceType, amountOfCreatedResource);
+                resourceHolder.Add(resourceCreator.ResourceType, resourceCreator.AmountOfResourcePerSecond);
             }
         }
 

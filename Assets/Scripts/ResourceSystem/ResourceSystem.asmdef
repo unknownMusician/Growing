@@ -1,7 +1,7 @@
 {
     "name": "Growing.ResourceSystem",
     "rootNamespace": "Growing.ResourceSystem",
-    "references": ["GUID:f064a9d0e42d461a8949f733f29eae99"],
+    "references": ["GUID:f064a9d0e42d461a8949f733f29eae99","GUID:774c824d4ab640e1a35394af55cd66e1","GUID:d1c2808875cf4d668229877695dcd0ed"],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

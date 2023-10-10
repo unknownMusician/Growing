@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Growing.ResourceSystem
 {
-    public class ResourceHolder
+    public sealed class ResourceHolder
     {
         private readonly Dictionary<ResourceType, float> amountOfResourcesByType = new()
         {

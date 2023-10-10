@@ -1,6 +1,8 @@
 ﻿using System;
 using AreYouFruits.InitializerGeneration;
 using AreYouFruits.MonoBehaviourUtils.Unity;
+using Growing.Events;
+using Growing.Messages;
 using UnityEngine;
 
 namespace Growing.Builder
@@ -11,9 +13,7 @@ namespace Growing.Builder
         private const int RaycastMaxDistance = int.MaxValue;
 
         [GenerateInitializer] private PlacedBuildingInfoHolder placedBuildingInfoHolder;
-
-        // TODO : It is better to use EventBus to reduce amount of dependencies
-        public event Action<GameObject> OnBuildingPlaced;
+        [GenerateInitializer] private EventBus eventBus;
         
         private void Update()
         {
@@ -76,9 +76,9 @@ namespace Growing.Builder
 
         private void PlaceBuilding(PlacementData placementData)
         {
-            GameObject building = Instantiate(placedBuildingInfoHolder.CurrentBuildingInfo.GetOrThrow().Prefab, 
+            var building = Instantiate(placedBuildingInfoHolder.CurrentBuildingInfo.GetOrThrow().Prefab,
                 placementData.Position, placementData.Rotation);
-            OnBuildingPlaced?.Invoke(building);
+            eventBus.Invoke(new BuildingPlacedEvent(building));
         }
     }
 }

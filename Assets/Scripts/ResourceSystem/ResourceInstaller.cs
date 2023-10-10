@@ -12,6 +12,7 @@ namespace Growing.ResourceSystem
             container.BindToInjectedConstructorLazySingleton<ResourceHolder>();
             container.BindToInjectedConstructorLazySingleton<ResourceBuildingsHolder>();
             container.BindToInjectedConstructorLazySingleton<ResourceBuildingsController>();
+            container.BindToInjectedConstructorLazySingleton<ResourceBuildingsRegisterer>();
         }
     }
 }
