@@ -1,0 +1,5 @@
+﻿{
+  "name": "Growing.Events",
+  "rootNamespace": "Growing.Events",
+  "references":[ "GUID:18589f4a50858d743a0c6e89f3e94a0a" ]
+}
