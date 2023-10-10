@@ -36,9 +36,9 @@ namespace Growing.ResourceSystem
 
         private void CreateResources()
         {
-            foreach (var resourceCreator in resourceBuildingsHolder.ResourceCreators)
+            foreach (var resourceTransferer in resourceBuildingsHolder.ResourceTransferers)
             {
-                resourceHolder.Add(resourceCreator.ResourceType, resourceCreator.AmountOfResourcePerSecond);
+                resourceHolder.Add(resourceTransferer.ResourceType, resourceTransferer.AmountOfResourcePerSecond);
             }
         }
 

@@ -19,10 +19,10 @@ namespace Growing.ResourceSystem
         private void HandleBuildingPlaced(BuildingPlacedEvent buildingPlacedEvent)
         {
             Debug.Log("Building is created!");
-            if (buildingPlacedEvent.Building.TryGetComponent<ResourceCreator>(out var resourceCreator))
+            if (buildingPlacedEvent.Building.TryGetComponent<ResourceTransferer>(out var resourceTransferer))
             {
-                Debug.Log("Building is ResourceCreator");
-                resourceBuildingsHolder.ResourceCreators.Add(resourceCreator);
+                Debug.Log("Building is ResourceTransferer");
+                resourceBuildingsHolder.ResourceTransferers.Add(resourceTransferer);
             }
         }
     }

@@ -4,6 +4,6 @@ namespace Growing.ResourceSystem
 {
     public sealed class ResourceBuildingsHolder
     {
-        public ICollection<ResourceCreator> ResourceCreators { get; } = new HashSet<ResourceCreator>();
+        public ICollection<ResourceTransferer> ResourceTransferers { get; } = new HashSet<ResourceTransferer>();
     }
 }

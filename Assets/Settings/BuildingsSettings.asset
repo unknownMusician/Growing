@@ -14,8 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingInfos:
   - Prefab: {fileID: 5517369888789249659, guid: 24410dc929319d647b072948cc8af6f0, type: 3}
-    BuildViewIcon: {fileID: 21300000, guid: 95d1c62b3e012a348a68a2607b86d465, type: 3}
-  - Prefab: {fileID: 5517369888789249659, guid: 24410dc929319d647b072948cc8af6f0, type: 3}
-    BuildViewIcon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  - Prefab: {fileID: 5517369888789249659, guid: 24410dc929319d647b072948cc8af6f0, type: 3}
-    BuildViewIcon: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+    BuildViewIcon: {fileID: 21300000, guid: c0eeb12ea0c3dd744948a01ad897d892, type: 3}
+  - Prefab: {fileID: 5517369888789249659, guid: 1a2b552f0739f0b4f899aa1eb1ea0b02, type: 3}
+    BuildViewIcon: {fileID: 21300000, guid: f527663259f9f97439046a1d10cd18dd, type: 3}
