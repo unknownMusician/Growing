@@ -7,7 +7,7 @@ namespace Growing.Events
     {
         private readonly SequentEventBroker<object> sequentEventBroker = new(allowSameOrder: false);
         
-        [GenerateConstructor] private readonly SubscribersOrderer subscribersOrderer;
+        [GenerateConstructor] private readonly ISubscribersOrderer subscribersOrderer;
 
         public bool Subscribe<T>(object subscriber, Action<T> handler)
         {

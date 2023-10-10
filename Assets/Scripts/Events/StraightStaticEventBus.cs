@@ -12,7 +12,7 @@ namespace Growing.Events
         private readonly bool allowSameOrder;
         private readonly TypedDictionary<object> handlers = new(DispatchType.Static);
 
-        [GenerateConstructor] private readonly SubscribersOrderer subscribersOrderer;
+        [GenerateConstructor] private readonly ISubscribersOrderer subscribersOrderer;
 
         public bool Subscribe<T>(object subscriber, Action<T> handler)
         {

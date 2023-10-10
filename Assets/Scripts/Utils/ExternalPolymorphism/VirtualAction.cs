@@ -120,7 +120,7 @@ namespace Growing.Utils.ExternalPolymorphism
             
             if (!registered.TryGetValue(type, out Entry entry))
             {
-                throw new NoTypeRegisteredException(type);
+                return default;
             }
 
             return (Action<T>)entry.Action;
@@ -243,7 +243,7 @@ namespace Growing.Utils.ExternalPolymorphism
             
             if (!registered.TryGetValue(type, out Entry entry))
             {
-                throw new NoTypeRegisteredException(type);
+                return default;
             }
 
             return (Action<T, T1>)entry.Action;

@@ -5,6 +5,7 @@ using AreYouFruits.Nullability;
 namespace Growing.Utils.ExternalPolymorphism
 {
     public sealed class VirtualFunc<TParameterBase, TResult>
+        // todo: refactor the same way as VirtualAction
     {
         private readonly Dictionary<Type, Func<TParameterBase, TResult>> registered = new();
 
