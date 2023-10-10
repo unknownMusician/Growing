@@ -6,7 +6,6 @@ using Growing.Utils;
 namespace Growing.Events
 {
     public sealed class SubscribersOrderer : ISubscribersOrderer
-        // todo
     {
         private const int DefaultOrder = 0;
         

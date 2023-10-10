@@ -13,12 +13,12 @@ namespace Growing.Utils
             return values.ToDictionary(static x => x.Key, static x => x.Value);
         }
 
-        public static async Task<IEnumerable<T>> WaitSimultaneous<T>(this IEnumerable<Task<T>> tasks)
+        public static async Task<T[]> WaitSimultaneous<T>(this IEnumerable<Task<T>> tasks)
         {
             return await Task.WhenAll(tasks);
         }
 
-        public static async Task<IEnumerable<T>> WaitSequent<T>(this IEnumerable<Task<T>> tasks)
+        public static async Task<List<T>> WaitSequent<T>(this IEnumerable<Task<T>> tasks)
         {
             var results = new List<T>();
 
