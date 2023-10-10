@@ -6,11 +6,11 @@ namespace Growing.ResourceSystem
 {
     public sealed class ResourceBuildingsRegisterer
     {
-        private readonly ResourceBuildingsHolder resourceBuildingsHolder;
+        private readonly ResourceTransferersHolder resourceTransferersHolder;
         
-        public ResourceBuildingsRegisterer(ResourceBuildingsHolder resourceBuildingsHolder, EventBus eventBus)
+        public ResourceBuildingsRegisterer(ResourceTransferersHolder resourceTransferersHolder, EventBus eventBus)
         {
-            this.resourceBuildingsHolder = resourceBuildingsHolder;
+            this.resourceTransferersHolder = resourceTransferersHolder;
             
             eventBus.Subscribe<BuildingPlacedEvent>(this, HandleBuildingPlaced);
         }
@@ -22,7 +22,7 @@ namespace Growing.ResourceSystem
             if (buildingPlacedEvent.Building.TryGetComponent<ResourceTransferer>(out var resourceTransferer))
             {
                 Debug.Log("Building is ResourceTransferer");
-                resourceBuildingsHolder.ResourceTransferers.Add(resourceTransferer);
+                resourceTransferersHolder.Values.Add(resourceTransferer);
             }
         }
     }

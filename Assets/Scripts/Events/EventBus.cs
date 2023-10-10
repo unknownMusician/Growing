@@ -11,13 +11,13 @@ namespace Growing.Events
 
         public bool Subscribe<T>(object subscriber, Action<T> handler)
         {
-            int order = subscribersOrderer.Order(subscriber.GetType());
+            var order = subscribersOrderer.Order(subscriber.GetType());
             return sequentEventBroker.Subscribe(handler, order);
         }
 
         public bool Unsubscribe<T>(object subscriber, Action<T> handler)
         {
-            int order = subscribersOrderer.Order(subscriber.GetType());
+            var order = subscribersOrderer.Order(subscriber.GetType());
             return sequentEventBroker.Unsubscribe(handler, order);
         }
 

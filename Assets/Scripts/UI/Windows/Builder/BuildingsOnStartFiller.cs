@@ -15,9 +15,9 @@ namespace Growing.UI.Windows.Builder
 
         private void Start()
         {
-            foreach (BuildingInfo buildingInfo in buildingsSettings.BuildingInfos)
+            foreach (var buildingInfo in buildingsSettings.BuildingInfos)
             {
-                GameObject buildingBuildViewObject = Instantiate(prefab, parent);
+                var buildingBuildViewObject = Instantiate(prefab, parent);
 
                 var buildingBuildView = buildingBuildViewObject.GetComponentOrThrow<BuildingBuildView>();
                 var buildingOnClickChooser = buildingBuildViewObject.GetComponentOrThrow<BuildingOnClickChooser>();

@@ -10,56 +10,56 @@ namespace Growing.Builder
     [GeneratedInitializerName("Inject")]
     public sealed partial class BuildingPlacer : MonoBehaviour
     {
+        private const int AmountOfVerticesInTriangle = 3;
         private const int RaycastMaxDistance = int.MaxValue;
 
-        [GenerateInitializer] private PlacedBuildingInfoHolder placedBuildingInfoHolder;
+        [GenerateInitializer] private PlacingBuildingInfoHolder placingBuildingInfoHolder;
         [GenerateInitializer] private EventBus eventBus;
+        
+        private readonly Vector3[] verticesCoordinates = new Vector3[AmountOfVerticesInTriangle];
         
         private void Update()
         {
-            if (IsPlacing())
+            if (IsPlacing() && Input.GetMouseButtonDown(0))
             {
-                if (Input.GetMouseButtonDown(0))
-                {
-                    TryToPlace();
-                }
+                TryPlace();
             }
         }
 
         private bool IsPlacing()
         {
-            return placedBuildingInfoHolder.CurrentBuildingInfo.IsInitialized;
+            return placingBuildingInfoHolder.Value.IsInitialized;
         }
 
-        private void TryToPlace()
+        private void TryPlace()
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             
-            if (Physics.Raycast(ray, out RaycastHit hit, RaycastMaxDistance))
+            if (Physics.Raycast(ray, out var hit, RaycastMaxDistance))
             {
-                PlacementData placementData = GetPlacementDataFromTriangleIndex(hit);
+                var placementData = GetPlacementDataFromTriangleIndex(hit);
                 PlaceBuilding(placementData);
             }
         }
 
         private PlacementData GetPlacementDataFromTriangleIndex(RaycastHit hit)
         {
-            const int amountOfVerticesInTriangle = 3;
+            UpdateVerticesCoordinates(hit);
 
-            Mesh mesh = hit.collider.gameObject.GetComponentOrThrow<MeshCollider>().sharedMesh;
-            
-            Span<Vector3> verticesCoordinates = stackalloc Vector3[amountOfVerticesInTriangle];
-            for (int i = 0; i < verticesCoordinates.Length; i++)
-            {
-                int vertexIndex = mesh.triangles[hit.triangleIndex * 3 + i];
-                verticesCoordinates[i] = mesh.vertices[vertexIndex];
-            }
-
-            Vector3 center = GetCenter(verticesCoordinates);
-            // TODO : Maybe extract method???
-            Vector3 forward = Vector3.Cross(hit.normal, verticesCoordinates[0] - center);
+            var center = GetCenter(verticesCoordinates);
+            var forward = Vector3.Cross(hit.normal, verticesCoordinates[0] - center);
             
             return new PlacementData(center, Quaternion.LookRotation(forward, hit.normal));
+        }
+
+        private void UpdateVerticesCoordinates(RaycastHit hit)
+        {
+            var mesh = hit.collider.gameObject.GetComponentOrThrow<MeshCollider>().sharedMesh;
+            for (var i = 0; i < verticesCoordinates.Length; i++)
+            {
+                var vertexIndex = mesh.triangles[hit.triangleIndex * 3 + i];
+                verticesCoordinates[i] = mesh.vertices[vertexIndex];
+            }
         }
 
         private Vector3 GetCenter(ReadOnlySpan<Vector3> coordinates)
@@ -76,7 +76,7 @@ namespace Growing.Builder
 
         private void PlaceBuilding(PlacementData placementData)
         {
-            var building = Instantiate(placedBuildingInfoHolder.CurrentBuildingInfo.GetOrThrow().Prefab,
+            var building = Instantiate(placingBuildingInfoHolder.Value.GetOrThrow().Prefab,
                 placementData.Position, placementData.Rotation);
             eventBus.Invoke(new BuildingPlacedEvent(building));
         }

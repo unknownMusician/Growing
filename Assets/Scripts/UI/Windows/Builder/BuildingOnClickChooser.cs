@@ -12,7 +12,7 @@ namespace Growing.UI.Windows.Builder
         [SerializeField] private Button button;
 
         [GenerateInitializer] private WindowOpener windowOpener;
-        [GenerateInitializer] private PlacedBuildingInfoHolder placedBuildingInfoHolder;
+        [GenerateInitializer] private PlacingBuildingInfoHolder placingBuildingInfoHolder;
 
         private BuildingInfo buildingInfo;
         
@@ -24,7 +24,7 @@ namespace Growing.UI.Windows.Builder
         private void HandleClick()
         {
             windowOpener.OpenWindow(WindowType.Main);
-            placedBuildingInfoHolder.CurrentBuildingInfo = buildingInfo;
+            placingBuildingInfoHolder.Value = buildingInfo;
         }
         
         public void Initialize(BuildingInfo buildingInfo)

@@ -10,7 +10,7 @@ namespace Growing.ResourceSystem
         public static void Install(IDiContainer container)
         {
             container.BindToInjectedConstructorLazySingleton<ResourceHolder>();
-            container.BindToInjectedConstructorLazySingleton<ResourceBuildingsHolder>();
+            container.BindToInjectedConstructorLazySingleton<ResourceTransferersHolder>();
             container.BindToInjectedConstructorLazySingleton<ResourceBuildingsController>();
             container.BindToInjectedConstructorLazySingleton<ResourceBuildingsRegisterer>();
         }

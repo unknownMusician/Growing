@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AreYouFruits.Tasks.Unity;
 
 namespace Growing.ResourceSystem
 {
     public sealed class ResourceBuildingsController : IDisposable
     {
-        private readonly ResourceBuildingsHolder resourceBuildingsHolder;
+        private readonly ResourceTransferersHolder resourceTransferersHolder;
         private readonly ResourceHolder resourceHolder;
 
+        // TODO : Create abstract TokenSource and create StopTokenSource
         private readonly CancellationTokenSource cts = new();
 
-        public ResourceBuildingsController(ResourceBuildingsHolder resourceBuildingsHolder,
+        public ResourceBuildingsController(ResourceTransferersHolder resourceTransferersHolder,
             ResourceHolder resourceHolder)
         {
-            this.resourceBuildingsHolder = resourceBuildingsHolder;
+            this.resourceTransferersHolder = resourceTransferersHolder;
             this.resourceHolder = resourceHolder;
 
             RunCreationCycle();
@@ -22,7 +24,7 @@ namespace Growing.ResourceSystem
 
         private void RunCreationCycle()
         {
-            Task.Run(ResourceCreationCycle);
+            ResourceCreationCycle().CatchAndLog();
         }
 
         private async Task ResourceCreationCycle()
@@ -30,13 +32,13 @@ namespace Growing.ResourceSystem
             while (!cts.IsCancellationRequested)
             {
                 CreateResources();
-                await Task.Delay(1000);
+                await Task.Delay(TimeSpan.FromSeconds(1));
             }
         }
 
         private void CreateResources()
         {
-            foreach (var resourceTransferer in resourceBuildingsHolder.ResourceTransferers)
+            foreach (var resourceTransferer in resourceTransferersHolder.Values)
             {
                 resourceHolder.Add(resourceTransferer.ResourceType, resourceTransferer.AmountOfResourcePerSecond);
             }
@@ -44,7 +46,6 @@ namespace Growing.ResourceSystem
 
         public void Dispose()
         {
-            cts.Dispose();
             cts.Cancel();
         }
     }

@@ -26,7 +26,7 @@ namespace Growing.Utils.ExternalPolymorphism
 
             while (optionalType.TryGet(out type))
             {
-                if (registered.TryGetValue(type, out Func<TParameterBase, TResult> func))
+                if (registered.TryGetValue(type, out var func))
                 {
                     return func;
                 }
@@ -45,7 +45,7 @@ namespace Growing.Utils.ExternalPolymorphism
         public Func<T, TResult> CreateCache<T>()
             where T : TParameterBase
         {
-            Func<TParameterBase, TResult> cache = CreateCache(typeof(T));
+            var cache = CreateCache(typeof(T));
             return value => cache(value);
         }
     }

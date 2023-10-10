@@ -18,7 +18,7 @@ namespace Growing.Utils
         public Optional<T> Get<T>()
             where T : TBase
         {
-            if (values.TryGetValue(typeof(T), out TBase value))
+            if (values.TryGetValue(typeof(T), out var value))
             {
                 return (T)value;
             }
@@ -41,7 +41,7 @@ namespace Growing.Utils
         private Type GetType<T>(T value)
             where T : TBase
         {
-            Type type = typeof(T);
+            var type = typeof(T);
 
             if (addedTypesDispatch is DispatchType.Dynamic && !type.IsSealed)
             {

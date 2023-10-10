@@ -9,8 +9,8 @@ namespace Growing.Events.DI
         [ContextInitializer]
         public static void Install(IDiContainer container)
         {
-            container.BindToInjectedConstructorLazySingleton<EventBus>();
             container.Bind<ISubscribersOrderer>().ToInjectedConstructorLazySingleton<SubscribersOrderer>();
+            container.BindToInjectedConstructorLazySingleton<EventBus>();
         }
     }
 }

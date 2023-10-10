@@ -16,7 +16,7 @@ namespace Growing.ResourceSystem
             CheckForResourceOrThrow(resourceType);
             amountOfResourcesByType[resourceType] += amount;
             
-            double roundedAmount = Math.Round(amountOfResourcesByType[resourceType], 2);
+            var roundedAmount = Math.Round(amountOfResourcesByType[resourceType], 2);
             Debug.Log($"Current amount of {resourceType} is {roundedAmount}");
         }
 

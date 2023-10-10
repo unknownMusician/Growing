@@ -16,7 +16,7 @@ namespace Growing.Events
 
         public bool Subscribe<T>(object subscriber, Action<T> handler)
         {
-            int order = Order(subscriber);
+            var order = Order(subscriber);
 
             if (!handlers.Get<SortedDictionary<int, List<Action<T>>>>().TryGet(out var sequence))
             {
@@ -41,7 +41,7 @@ namespace Growing.Events
 
         public bool Unsubscribe<T>(object subscriber, Action<T> handler)
         {
-            int order = Order(subscriber);
+            var order = Order(subscriber);
 
             if (!handlers.Get<SortedDictionary<int, List<Action<T>>>>().TryGet(out var sequence))
             {
@@ -70,9 +70,9 @@ namespace Growing.Events
                 return;
             }
 
-            foreach (List<Action<T>> sameOrderHandlers in sequence.Values.ToArray())
+            foreach (var sameOrderHandlers in sequence.Values.ToArray())
             {
-                foreach (Action<T> handler in sameOrderHandlers)
+                foreach (var handler in sameOrderHandlers)
                 {
                     handler(message);
                 }

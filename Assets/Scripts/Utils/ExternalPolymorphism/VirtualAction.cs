@@ -28,9 +28,9 @@ namespace Growing.Utils.ExternalPolymorphism
         public bool Unregister<T>(Action<T> action)
             where T : TParameterBase
         {
-            Type type = typeof(T);
+            var type = typeof(T);
             
-            if (!registered.TryGetValue(type, out Entry entry))
+            if (!registered.TryGetValue(type, out var entry))
             {
                 return false;
             }
@@ -48,7 +48,7 @@ namespace Growing.Utils.ExternalPolymorphism
         public bool Invoke<T>(T value)
             where T : TParameterBase
         {
-            if (!CreateCache(value).TryGet(out Action<T> action))
+            if (!CreateCache(value).TryGet(out var action))
             {
                 return false;
             }
@@ -62,12 +62,12 @@ namespace Growing.Utils.ExternalPolymorphism
         public Optional<Action<T>> CreateCache<T>(T value)
             where T : TParameterBase
         {
-            if (CreateCacheSealed<T>().TryGet(out Action<T> action))
+            if (CreateCacheSealed<T>().TryGet(out var action))
             {
                 return action;
             }
 
-            if (CreateCache(value.GetType()).TryGet(out Action<TParameterBase> cache))
+            if (CreateCache(value.GetType()).TryGet(out var cache))
             {
                 return (Action<T>)(x => cache(x));
             }
@@ -78,12 +78,12 @@ namespace Growing.Utils.ExternalPolymorphism
         public Optional<Action<T>> CreateCache<T>()
             where T : TParameterBase
         {
-            if (CreateCacheSealed<T>().TryGet(out Action<T> action))
+            if (CreateCacheSealed<T>().TryGet(out var action))
             {
                 return action;
             }
 
-            if (CreateCache(typeof(T)).TryGet(out Action<TParameterBase> cache))
+            if (CreateCache(typeof(T)).TryGet(out var cache))
             {
                 return (Action<T>)(x => cache(x));
             }
@@ -95,9 +95,9 @@ namespace Growing.Utils.ExternalPolymorphism
         {
             Optional<Type> optionalType = type;
 
-            while (optionalType.TryGet(out Type notNullType))
+            while (optionalType.TryGet(out var notNullType))
             {
-                if (registered.TryGetValue(notNullType, out Entry entry))
+                if (registered.TryGetValue(notNullType, out var entry))
                 {
                     return entry.Wrapper;
                 }
@@ -111,14 +111,14 @@ namespace Growing.Utils.ExternalPolymorphism
         private Optional<Action<T>> CreateCacheSealed<T>()
             where T : TParameterBase
         {
-            Type type = typeof(T);
+            var type = typeof(T);
 
             if (!type.IsSealed)
             {
                 return default;
             }
             
-            if (!registered.TryGetValue(type, out Entry entry))
+            if (!registered.TryGetValue(type, out var entry))
             {
                 return default;
             }
@@ -151,9 +151,9 @@ namespace Growing.Utils.ExternalPolymorphism
         public bool Unregister<T>(Action<T, T1> action)
             where T : TParameterBase
         {
-            Type type = typeof(T);
+            var type = typeof(T);
             
-            if (!registered.TryGetValue(type, out Entry entry))
+            if (!registered.TryGetValue(type, out var entry))
             {
                 return false;
             }
@@ -171,7 +171,7 @@ namespace Growing.Utils.ExternalPolymorphism
         public bool Invoke<T>(T p0, T1 p1)
             where T : TParameterBase
         {
-            if (CreateCache(p0).TryGet(out Action<T, T1> action))
+            if (CreateCache(p0).TryGet(out var action))
             {
                 action(p0, p1);
                 return true;
@@ -185,12 +185,12 @@ namespace Growing.Utils.ExternalPolymorphism
         public Optional<Action<T, T1>> CreateCache<T>(T value)
             where T : TParameterBase
         {
-            if (CreateCacheSealed<T>().TryGet(out Action<T, T1> action))
+            if (CreateCacheSealed<T>().TryGet(out var action))
             {
                 return action;
             }
 
-            if (CreateCache(value.GetType()).TryGet(out Action<TParameterBase, T1> cache))
+            if (CreateCache(value.GetType()).TryGet(out var cache))
             {
                 return (Action<T, T1>)((p0, p1) => cache(p0, p1));
             }
@@ -201,12 +201,12 @@ namespace Growing.Utils.ExternalPolymorphism
         public Optional<Action<T, T1>> CreateCache<T>()
             where T : TParameterBase
         {
-            if (CreateCacheSealed<T>().TryGet(out Action<T, T1> action))
+            if (CreateCacheSealed<T>().TryGet(out var action))
             {
                 return action;
             }
 
-            if (CreateCache(typeof(T)).TryGet(out Action<TParameterBase, T1> cache))
+            if (CreateCache(typeof(T)).TryGet(out var cache))
             {
                 return (Action<T, T1>)((p0, p1) => cache(p0, p1));
             }
@@ -218,9 +218,9 @@ namespace Growing.Utils.ExternalPolymorphism
         {
             Optional<Type> optionalType = type;
 
-            while (optionalType.TryGet(out Type notNullType))
+            while (optionalType.TryGet(out var notNullType))
             {
-                if (registered.TryGetValue(notNullType, out Entry entry))
+                if (registered.TryGetValue(notNullType, out var entry))
                 {
                     return entry.Wrapper;
                 }
@@ -234,14 +234,14 @@ namespace Growing.Utils.ExternalPolymorphism
         private Optional<Action<T, T1>> CreateCacheSealed<T>()
             where T : TParameterBase
         {
-            Type type = typeof(T);
+            var type = typeof(T);
 
             if (!type.IsSealed)
             {
                 return default;
             }
             
-            if (!registered.TryGetValue(type, out Entry entry))
+            if (!registered.TryGetValue(type, out var entry))
             {
                 return default;
             }

@@ -23,7 +23,7 @@ namespace Growing.Tests.EditMode.Events
         {
             // todo: should depend on interface
             var eventBus = new EventBus(new SubscribersOrdererMock(_ => 0));
-            int handledValue = 0;
+            var handledValue = 0;
             const int firedValue = 5;
 
             eventBus.Subscribe<int>(this, x => handledValue = x);
@@ -39,7 +39,7 @@ namespace Growing.Tests.EditMode.Events
             var eventBus = new EventBus(new SubscribersOrdererMock(_ => 0));
             const int initialValue = 0;
             const float firedValue = 5;
-            int handledValue = initialValue;
+            var handledValue = initialValue;
 
             eventBus.Subscribe<int>(this, x => handledValue = x);
             eventBus.Invoke<float>(firedValue);
