@@ -1,4 +1,5 @@
-﻿using AreYouFruits.InitializerGeneration;
+﻿using System;
+using AreYouFruits.InitializerGeneration;
 using Growing.Builder;
 using Growing.UI.WindowSystem;
 using UnityEngine;
@@ -9,16 +10,28 @@ namespace Growing.UI.Windows.Builder
     [GeneratedInitializerName("Inject")]
     public sealed partial class BuildingOnClickChooser : MonoBehaviour
     {
-        [SerializeField] private Button button;
-
+        private Button buttonn;
+        
         [GenerateInitializer] private WindowOpener windowOpener;
         [GenerateInitializer] private PlacingBuildingInfoHolder placingBuildingInfoHolder;
 
         private BuildingInfo buildingInfo;
-        
-        private void Awake()
+
+        public void SetButton(Button button)
         {
+            TryUnsubscribeButton();
+            
+            this.buttonn = button;
+            
             button.onClick.AddListener(HandleClick);
+        }
+
+        private void TryUnsubscribeButton()
+        {
+            if (buttonn != null)
+            {
+                buttonn.onClick.RemoveListener(HandleClick);
+            }
         }
 
         private void HandleClick()
@@ -30,6 +43,11 @@ namespace Growing.UI.Windows.Builder
         public void Initialize(BuildingInfo buildingInfo)
         {
             this.buildingInfo = buildingInfo;
+        }
+
+        private void OnDestroy()
+        {
+            TryUnsubscribeButton();
         }
     }
 }

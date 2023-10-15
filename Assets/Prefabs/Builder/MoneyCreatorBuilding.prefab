@@ -119,8 +119,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f78a86fcfb1436e8ef2cd5e749bb896, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resourceType: 0
-  amountOfResourcesPerSecond: 1
+  <ResourceType>k__BackingField: 0
+  <AmountOfResourcePerSecond>k__BackingField: 1
 --- !u!114 &8709232076773187428
 MonoBehaviour:
   m_ObjectHideFlags: 0

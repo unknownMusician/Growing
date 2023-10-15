@@ -4,10 +4,7 @@ namespace Growing.ResourceSystem
 {
     public sealed class ResourceTransferer : MonoBehaviour
     {
-        [SerializeField] private ResourceType resourceType;
-        [SerializeField] private float amountOfResourcesPerSecond;
-
-        public ResourceType ResourceType => resourceType;
-        public float AmountOfResourcePerSecond => amountOfResourcesPerSecond;
+        [field: SerializeField] public ResourceType ResourceType { get; private set; }
+        [field: SerializeField] public float AmountOfResourcePerSecond { get; private set; }
     }
 }

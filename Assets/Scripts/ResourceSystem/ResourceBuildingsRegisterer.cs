@@ -15,7 +15,6 @@ namespace Growing.ResourceSystem
             eventBus.Subscribe<BuildingPlacedEvent>(this, HandleBuildingPlaced);
         }
 
-        // TODO : Add ResourceConsumer handling (after resource consumption is implemented)
         private void HandleBuildingPlaced(BuildingPlacedEvent buildingPlacedEvent)
         {
             Debug.Log("Building is created!");

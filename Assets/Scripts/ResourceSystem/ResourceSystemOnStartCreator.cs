@@ -1,4 +1,5 @@
-﻿using AreYouFruits.InitializerGeneration;
+﻿using System;
+using AreYouFruits.InitializerGeneration;
 using UnityEngine;
 
 namespace Growing.ResourceSystem
@@ -8,5 +9,10 @@ namespace Growing.ResourceSystem
     {
         [GenerateInitializer] private ResourceBuildingsController resourceBuildingsController;
         [GenerateInitializer] private ResourceBuildingsRegisterer resourceBuildingsRegisterer;
+
+        private void OnDestroy()
+        {
+            resourceBuildingsController.Dispose();
+        }
     }
 }

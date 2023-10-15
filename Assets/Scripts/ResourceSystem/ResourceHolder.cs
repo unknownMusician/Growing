@@ -6,6 +6,7 @@ namespace Growing.ResourceSystem
 {
     public sealed class ResourceHolder
     {
+        // TODO : At the moment we are limited with float type of value. But maybe we will need integers, for amount of people for example. Think about component-based approach
         private readonly Dictionary<ResourceType, float> amountOfResourcesByType = new()
         {
             { ResourceType.Money , 0 }
@@ -13,7 +14,7 @@ namespace Growing.ResourceSystem
 
         public void Add(ResourceType resourceType, float amount)
         {
-            CheckForResourceOrThrow(resourceType);
+            ThrowIfNotContains(resourceType);
             amountOfResourcesByType[resourceType] += amount;
             
             var roundedAmount = Math.Round(amountOfResourcesByType[resourceType], 2);
@@ -22,25 +23,11 @@ namespace Growing.ResourceSystem
 
         public bool IsEnough(ResourceType resourceType, float amount)
         {
-            CheckForResourceOrThrow(resourceType);
+            ThrowIfNotContains(resourceType);
             return amountOfResourcesByType[resourceType] > amount;
         }
 
-        public void Withdraw(ResourceType resourceType, float amount)
-        {
-            CheckForResourceOrThrow(resourceType);
-            
-            if (amountOfResourcesByType[resourceType] < amount)
-            {
-                Debug.LogError($"You've tried to withdraw {amount} {resourceType.ToString()}, " +
-                               $"but you have only {amountOfResourcesByType[resourceType]}");
-                return;
-            }
-            
-            amountOfResourcesByType[resourceType] -= amount;
-        }
-
-        private void CheckForResourceOrThrow(ResourceType resourceType)
+        private void ThrowIfNotContains(ResourceType resourceType)
         {
             if (!amountOfResourcesByType.ContainsKey(resourceType))
             {

@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using AreYouFruits.Tasks.Unity;
+using Growing.Utils.Tokens;
 
 namespace Growing.ResourceSystem
 {
@@ -10,8 +10,7 @@ namespace Growing.ResourceSystem
         private readonly ResourceTransferersHolder resourceTransferersHolder;
         private readonly ResourceHolder resourceHolder;
 
-        // TODO : Create abstract TokenSource and create StopTokenSource
-        private readonly CancellationTokenSource cts = new();
+        private readonly StopTokenSource stopTokenSource = new();
 
         public ResourceBuildingsController(ResourceTransferersHolder resourceTransferersHolder,
             ResourceHolder resourceHolder)
@@ -24,12 +23,12 @@ namespace Growing.ResourceSystem
 
         private void RunCreationCycle()
         {
-            ResourceCreationCycle().CatchAndLog();
+            ResourceCreationCycle(stopTokenSource.Token).CatchAndLog();
         }
 
-        private async Task ResourceCreationCycle()
+        private async Task ResourceCreationCycle(StopToken stopToken)
         {
-            while (!cts.IsCancellationRequested)
+            while (!stopToken.IsStopped)
             {
                 CreateResources();
                 await Task.Delay(TimeSpan.FromSeconds(1));
@@ -46,7 +45,7 @@ namespace Growing.ResourceSystem
 
         public void Dispose()
         {
-            cts.Cancel();
+            stopTokenSource.Stop();
         }
     }
 }
