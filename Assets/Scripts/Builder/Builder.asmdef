@@ -1,0 +1,20 @@
+{
+    "name": "Builder",
+    "rootNamespace": "Growing.Builder",
+    "references": ["GUID:774c824d4ab640e1a35394af55cd66e1","GUID:d1c2808875cf4d668229877695dcd0ed"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "AreYouFruits.ConstructorGeneration.dll",
+        "AreYouFruits.MonoBehaviourUtils.Unity.dll",
+        "AreYouFruits.DependencyInjection.dll",
+        "AreYouFruits.InitializerGeneration.dll",
+        "AreYouFruits.Nullability.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

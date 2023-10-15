@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 510659578, guid: 555a7bf3eefd2ce42b66c28c4f4c8961, type: 3}
+  m_Name: DiSettings
+  m_EditorClassIdentifier: 
+  <Bindings>k__BackingField:
+  - Object: {fileID: 11400000, guid: 367519b67ea882147bedbedb5fc90773, type: 2}
+    TypeName: Growing.Settings.PlanetGenerationSettings, Growing.Settings, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  - Object: {fileID: 11400000, guid: 8f62cbd7cc2b07a48a2fadee5d7c62c0, type: 2}
+    TypeName: Growing.Builder.BuildingsSettings, Builder, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null

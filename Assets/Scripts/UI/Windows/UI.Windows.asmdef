@@ -1,0 +1,22 @@
+{
+    "name": "Growing.UI.Windows",
+    "rootNamespace": "Growing.UI.Windows",
+    "references": [
+        "GUID:61ee2dd5997542589a57c915dba188b8",
+        "GUID:f064a9d0e42d461a8949f733f29eae99"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "AreYouFruits.InitializerGeneration.dll",
+        "AreYouFruits.MonoBehaviourUtils.Unity.dll",
+        "AreYouFruits.ConstructorGeneration.dll",
+        "AreYouFruits.Nullability.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
