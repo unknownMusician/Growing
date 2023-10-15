@@ -22,7 +22,7 @@ namespace Growing.Utils.SequentEvents
 
         public bool Add(TDelegate @delegate, TOrder order = default)
         {
-            if (!delegates.TryGetValue(order, out List<TDelegate> sameOrderActions))
+            if (!delegates.TryGetValue(order, out var sameOrderActions))
             {
                 sameOrderActions = new List<TDelegate> { @delegate };
                 delegates.Add(order, sameOrderActions);

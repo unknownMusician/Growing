@@ -19,7 +19,7 @@ namespace Growing.PlanetGeneration
         
         public void Generate()
         {
-            if (!planetHolder.Value.TryGet(out GameObject planetObject))
+            if (!planetHolder.Value.TryGet(out var planetObject))
             {
                 planetObject = Object.Instantiate(planetGenerationSettings.Prefab);
                 planetHolder.Value = planetObject;
@@ -55,15 +55,15 @@ namespace Growing.PlanetGeneration
 
         private (Vector3[], int[]) SubdivideTriangles(Vector3[] vertices, int[] triangles)
         {
-            int subdividedTrianglesCount = GetSubdividedTrianglesCount(planetGenerationSettings.Detailing);
+            var subdividedTrianglesCount = GetSubdividedTrianglesCount(planetGenerationSettings.Detailing);
 
-            int resultTrianglesCount = triangles.Length * subdividedTrianglesCount;
+            var resultTrianglesCount = triangles.Length * subdividedTrianglesCount;
 
             var resultVertices = new Vector3[resultTrianglesCount];
 
             var subdividedTriangles = new Triangle[subdividedTrianglesCount];
 
-            for (int i = 0; i < triangles.Length / 3; i++)
+            for (var i = 0; i < triangles.Length / 3; i++)
             {
                 SubdivideTriangle(new Triangle
                 {
@@ -72,9 +72,9 @@ namespace Growing.PlanetGeneration
                     Vertex2 = vertices[triangles[i * 3 + 2]],
                 }, subdividedTriangles);
 
-                for (int j = 0; j < subdividedTriangles.Length; j++)
+                for (var j = 0; j < subdividedTriangles.Length; j++)
                 {
-                    Triangle subdividedTriangle = subdividedTriangles[j];
+                    var subdividedTriangle = subdividedTriangles[j];
 
                     resultVertices[i * subdividedTrianglesCount * 3 + j * 3 + 0] = subdividedTriangle.Vertex0;
                     resultVertices[i * subdividedTrianglesCount * 3 + j * 3 + 1] = subdividedTriangle.Vertex1;
@@ -87,9 +87,9 @@ namespace Growing.PlanetGeneration
 
         private static int[] NumerateLowPolyTriangles(Vector3[] vertices)
         {
-            int[] results = new int[vertices.Length];
+            var results = new int[vertices.Length];
 
-            for (int i = 0; i < results.Length; i++)
+            for (var i = 0; i < results.Length; i++)
             {
                 results[i] = i;
             }
@@ -99,14 +99,14 @@ namespace Growing.PlanetGeneration
 
         private void SubdivideTriangle(Triangle triangle, Span<Triangle> results)
         {
-            int detailing = planetGenerationSettings.Detailing;
+            var detailing = planetGenerationSettings.Detailing;
 
             if (detailing < 1)
             {
                 throw new ArgumentOutOfRangeException(nameof(detailing), detailing, null);
             }
 
-            Vector3[] triangleVertices = SubdivideTriangleVertices(triangle, detailing);
+            var triangleVertices = SubdivideTriangleVertices(triangle, detailing);
 
             AssembleSubdividedTriangles(triangleVertices, detailing, results);
         }
@@ -116,16 +116,16 @@ namespace Growing.PlanetGeneration
             var results = singleSubdividedTriangleVerticesBuffer;
             var resultsFiller = new SpanFiller<Vector3>(results);
 
-            for (int row = 0; row <= detailing; row++)
+            for (var row = 0; row <= detailing; row++)
             {
-                float horizontalT = (float)row / detailing;
+                var horizontalT = (float)row / detailing;
                 
-                Vector3 rowStart = Vector3.SlerpUnclamped(triangle.Vertex0, triangle.Vertex1, horizontalT);
-                Vector3 rowEnd = Vector3.SlerpUnclamped(triangle.Vertex0, triangle.Vertex2, horizontalT);
+                var rowStart = Vector3.SlerpUnclamped(triangle.Vertex0, triangle.Vertex1, horizontalT);
+                var rowEnd = Vector3.SlerpUnclamped(triangle.Vertex0, triangle.Vertex2, horizontalT);
 
-                for (int column = 0; column <= row; column++)
+                for (var column = 0; column <= row; column++)
                 {
-                    Vector3 vertex = (row == 0) switch
+                    var vertex = (row == 0) switch
                     {
                         true => triangle.Vertex0,
                         false => Vector3.SlerpUnclamped(rowStart, rowEnd, (float)column / row),
@@ -142,25 +142,25 @@ namespace Growing.PlanetGeneration
         {
             var resultsFiller = new SpanFiller<Triangle>(results);
 
-            int rowFirstIndex = 0;
+            var rowFirstIndex = 0;
 
-            for (int row = 0; row < detailing; row++)
+            for (var row = 0; row < detailing; row++)
             {
                 rowFirstIndex += row;
 
-                int columnsCount = row + 1;
+                var columnsCount = row + 1;
 
-                for (int column = 0; column < columnsCount; column++)
+                for (var column = 0; column < columnsCount; column++)
                 {
-                    Vector3 topVertex = vertices[rowFirstIndex + column];
-                    Vector3 leftBottomVertex = vertices[rowFirstIndex + column + row + 2];
-                    Vector3 rightBottomVertex = vertices[rowFirstIndex + column + row + 1];
+                    var topVertex = vertices[rowFirstIndex + column];
+                    var leftBottomVertex = vertices[rowFirstIndex + column + row + 2];
+                    var rightBottomVertex = vertices[rowFirstIndex + column + row + 1];
                     
                     resultsFiller.Add(new Triangle(topVertex, rightBottomVertex, leftBottomVertex));
 
                     if (column != columnsCount - 1)
                     {
-                        Vector3 rightTopVertex = vertices[rowFirstIndex + column + 1];
+                        var rightTopVertex = vertices[rowFirstIndex + column + 1];
                         resultsFiller.Add(new Triangle(topVertex, leftBottomVertex, rightTopVertex));
                     }
                 }

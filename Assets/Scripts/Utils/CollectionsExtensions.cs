@@ -22,7 +22,7 @@ namespace Growing.Utils
         {
             var results = new List<T>();
 
-            foreach (Task<T> task in tasks)
+            foreach (var task in tasks)
             {
                 results.Add(await task);
             }

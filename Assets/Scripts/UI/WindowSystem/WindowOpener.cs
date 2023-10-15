@@ -17,7 +17,7 @@ namespace Growing.UI.WindowSystem
         {
             CloseWindow();
 
-            WindowComponent window = windowRegistryHolder.Value.Windows[windowType];
+            var window = windowRegistryHolder.Value.Windows[windowType];
 
             openedWindow = new WindowPair
             {

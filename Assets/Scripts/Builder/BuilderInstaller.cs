@@ -9,7 +9,8 @@ namespace Growing.Builder
         [ContextInitializer]
         public static void Install(IDiContainer container)
         {
-            container.BindToInjectedConstructorLazySingleton<PlacedBuildingInfoHolder>();
+            container.BindToInjectedConstructorLazySingleton<PlacingBuildingInfoHolder>();
+            container.BindToInjectedConstructorLazySingleton<BuildingPlacer>();
         }
     }
 }

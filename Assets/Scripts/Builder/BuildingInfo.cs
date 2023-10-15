@@ -7,6 +7,6 @@ namespace Growing.Builder
     public struct BuildingInfo
     {
         public GameObject Prefab;
-        public Sprite BuildViewIcon;
+        public GameObject BuildViewIconPrefab;
     }
 }

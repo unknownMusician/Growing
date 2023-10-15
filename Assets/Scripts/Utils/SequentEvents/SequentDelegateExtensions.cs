@@ -44,7 +44,7 @@ namespace Growing.Utils.SequentEvents
             var exceptions = new List<Exception>();
             
             // todo: ToArray is less memory-efficient, but allows collection change while iterating
-            foreach (TDelegate @delegate in sequentDelegate.All.ToArray())
+            foreach (var @delegate in sequentDelegate.All.ToArray())
             {
                 try
                 {
