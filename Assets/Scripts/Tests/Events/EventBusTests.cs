@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Growing.Events;
 using NUnit.Framework;
 
@@ -8,7 +10,6 @@ namespace Growing.Tests.EditMode.Events
         [Test]
         public void SubscribedHandler_SubscribedTypePassed_SubscriberInvoked()
         {
-            // todo: should depend on interface
             var eventBus = new EventBus(new SubscribersOrdererMock
             {
                 Order = _ => 0,
@@ -23,9 +24,8 @@ namespace Growing.Tests.EditMode.Events
         }
 
         [Test]
-        public void SubscribedHandler_SubscribedTypePassed_Ignored()
+        public void SubscribedHandler_OtherTypePassed_Ignored()
         {
-            // todo: should depend on interface
             var eventBus = new EventBus(new SubscribersOrdererMock
             {
                 Order = _ => 0,
@@ -40,7 +40,48 @@ namespace Growing.Tests.EditMode.Events
             Assert.That(handledValue, Is.EqualTo(initialValue));
         }
 
+        [Test]
+        public void UnsubscribedHandler_SubscribedTypePassed_Ignored()
+        {
+            var eventBus = new EventBus(new SubscribersOrdererMock
+            {
+                Order = _ => 0,
+            });
 
-        // todo: ordering
+            bool isChanged = false;
+
+            Action<int> handler = _ => isChanged = true;
+            
+            eventBus.Subscribe<int>(this, handler);
+            eventBus.Unsubscribe<int>(this, handler);
+            
+            eventBus.Invoke(5);
+            
+            Assert.That(!isChanged);
+        }
+
+        [Test]
+        public void OrderingWorks()
+        {
+            var ordering = new Dictionary<Type, int>
+            {
+                [typeof(long)] = 1,
+                [typeof(float)] = 2,
+                [typeof(string)] = 3,
+            };
+            var eventBus = new EventBus(new SubscribersOrdererMock
+            {
+                Order = t => ordering[t],
+            });
+            bool result = true;
+            int v = 0;
+            eventBus.Subscribe<double>((long)5, _ => result &= ordering[typeof(long)] == (v += 1));
+            eventBus.Subscribe<double>((float)5, _ => result &= ordering[typeof(float)] == (v += 1));
+            eventBus.Subscribe<double>((string)"5", _ => result &= ordering[typeof(string)] == (v += 1));
+            
+            eventBus.Invoke((double)2);
+            
+            Assert.That(result);
+        }
     }
 }
