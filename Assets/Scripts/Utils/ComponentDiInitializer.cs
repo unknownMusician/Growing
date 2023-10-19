@@ -21,9 +21,9 @@ namespace Growing.Utils
 
         private void InjectGameObject()
         {
-            foreach (Component component in gameObject.GetComponents<Component>())
+            foreach (var component in gameObject.GetComponents<Component>())
             {
-                if (GetInitializerMethodInfo(component).TryGet(out MethodInfo methodInfo))
+                if (GetInitializerMethodInfo(component).TryGet(out var methodInfo))
                 {
                     Invoke(methodInfo, component);
                 }
@@ -32,13 +32,13 @@ namespace Growing.Utils
 
         private Optional<MethodInfo> GetInitializerMethodInfo(Component component)
         {
-            Type type = component.GetType();
+            var type = component.GetType();
 
             Optional<MethodInfo> result = default;
 
-            foreach (string initializerMethodName in initializerMethodNames)
+            foreach (var initializerMethodName in initializerMethodNames)
             {
-                MethodInfo methodInfo =
+                var methodInfo =
                     type.GetMethod(initializerMethodName, BindingFlags.Instance | BindingFlags.Public);
 
                 if (methodInfo is not null && !methodInfo.IsGenericMethod)
@@ -55,9 +55,9 @@ namespace Growing.Utils
 
         private static void Invoke(MethodInfo methodInfo, object methodOwner)
         {
-            ParameterInfo[] parameterInfos = methodInfo.GetParameters();
+            var parameterInfos = methodInfo.GetParameters();
 
-            object[] parameters = ResolveParameters(parameterInfos);
+            var parameters = ResolveParameters(parameterInfos);
 
             methodInfo.Invoke(methodOwner, parameters);
         }

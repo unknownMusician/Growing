@@ -32,7 +32,7 @@ namespace Growing.Tests.EditMode.Events
             });
             const int initialValue = 0;
             const float firedValue = 5;
-            int handledValue = initialValue;
+            var handledValue = initialValue;
 
             eventBus.Subscribe<int>(this, x => handledValue = x);
             eventBus.Invoke<float>(firedValue);
